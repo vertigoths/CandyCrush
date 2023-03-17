@@ -24,6 +24,11 @@ namespace BlockRelated
             _spriteRenderer.sprite = _blockData.sprite;
         }
 
+        public BlockSo GetBlockData()
+        {
+            return _blockData;
+        }
+
         public void SetCell(Cell cell)
         {
             _cell = cell;
@@ -53,9 +58,12 @@ namespace BlockRelated
         {
             SetCell(newCell);
             
+            transform.SetParent(newCell.transform);
+            newCell.SetBlock(this);
+
             var to = newCell.transform.position;
 
-            transform.DOJump(to, 0.66f, 1, 0.33f)
+            transform.DOMove(to, 0.2f)
                 .SetEase(Ease.Linear);
         }
     }

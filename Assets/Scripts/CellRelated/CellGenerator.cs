@@ -16,6 +16,8 @@ namespace CellRelated
 
         private float _mainOffset;
         [SerializeField] private float offset;
+
+        [SerializeField] private bool loadFrom;
         
         private CellController _cellController;
 
@@ -47,10 +49,28 @@ namespace CellRelated
                     cellObject.transform.localPosition = spawnPosition;
 
                     var cell = cellObject.GetComponent<Cell>();
-                    var block = GetRandomBlockData();
-                    cell.SetBlock(block);
+                    var index = -1;
 
-                    cells[i][j] = cell;
+                    if (loadFrom)
+                    {
+                        index = LevelData.FirstLevel[j][i];
+
+                        if (index == -1)
+                        {
+                            cellObject.SetActive(false);
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        index = Random.Range(0, blockData.Length);
+                    }
+                    
+                    var block = GetBlockData(index);
+                    cell.SetBlock(block);
+                    cell.SetIndices(j, i);
+
+                    cells[j][i] = cell;
                 }
             }
             
@@ -59,9 +79,9 @@ namespace CellRelated
             _cellController.SetCells(cells);
         }
 
-        private BlockSo GetRandomBlockData()
+        private BlockSo GetBlockData(int index)
         {
-            return blockData[Random.Range(0, blockData.Length)];
+            return blockData[index];
         }
 
         private void GenerateBorders()
