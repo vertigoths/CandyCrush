@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using CellRelated;
 using UnityEngine;
 
@@ -45,11 +46,8 @@ namespace BlockRelated
 
                 if (isValid)
                 {
-                    interactedBlock.ChangeCellTo(firstCell);
-                    _lastInteractedBlock.ChangeCellTo(secondCell);
-
-                    var isVertical = IsVerticalMove(firstCell, secondCell);
-                    _cellController.OnChange(firstCell, secondCell, isVertical);
+                    interactedBlock.ChangeCellTo(firstCell, _cellController);
+                    _lastInteractedBlock.ChangeCellTo(secondCell, _cellController);
                 }
 
                 _lastInteractedBlock = null;
@@ -62,14 +60,6 @@ namespace BlockRelated
             var horizontalDiff = Mathf.Abs(firstCell.GetHorizontalIndex() - secondCell.GetHorizontalIndex());
 
             return verticalDiff + horizontalDiff <= 1;
-        }
-
-        private bool IsVerticalMove(Cell firstCell, Cell secondCell)
-        {
-            var verticalDiff = Mathf.Abs(firstCell.GetVerticalIndex() - secondCell.GetVerticalIndex());
-            var horizontalDiff = Mathf.Abs(firstCell.GetHorizontalIndex() - secondCell.GetHorizontalIndex());
-
-            return verticalDiff > horizontalDiff;
         }
     }
 }

@@ -34,11 +34,7 @@ namespace CellRelated
 
         public void GenerateCells()
         {
-            var cells = new Cell[verticalLength][];
-            for (var index = 0; index < verticalLength; index++)
-            {
-                cells[index] = new Cell[horizontalLength];
-            }
+            var cells = new Cell[verticalLength, horizontalLength];
 
             for (var i = 0; i < verticalLength; i++)
             {
@@ -70,7 +66,7 @@ namespace CellRelated
                     cell.SetBlock(block);
                     cell.SetIndices(j, i);
 
-                    cells[j][i] = cell;
+                    cells[j, i] = cell;
                 }
             }
             

@@ -54,17 +54,38 @@ namespace BlockRelated
             BlockInteraction.Instance.DeSelect();
         }
 
-        public void ChangeCellTo(Cell newCell)
+        public void ChangeCellTo(Cell newCell, CellController cellController)
         {
-            SetCell(newCell);
-            
-            transform.SetParent(newCell.transform);
-            newCell.SetBlock(this);
+            var prevCell = _cell;
 
             var to = newCell.transform.position;
 
-            transform.DOMove(to, 0.2f)
-                .SetEase(Ease.Linear);
+            transform.DOMove(to, 5f)
+                .SetEase(Ease.Linear)
+                .SetSpeedBased(true)
+                .OnComplete(() =>
+                {
+                    SetCell(newCell);
+                    transform.SetParent(newCell.transform);
+                    newCell.SetBlock(this);
+                    
+                    OnBlockChange(prevCell, newCell, cellController);
+                });
+        }
+
+        private bool IsVerticalMove(Cell firstCell, Cell secondCell)
+        {
+            var verticalDiff = Mathf.Abs(firstCell.GetVerticalIndex() - secondCell.GetVerticalIndex());
+            var horizontalDiff = Mathf.Abs(firstCell.GetHorizontalIndex() - secondCell.GetHorizontalIndex());
+
+            return verticalDiff > horizontalDiff;
+        }
+
+        private void OnBlockChange(Cell firstCell, Cell secondCell, CellController cellController)
+        {
+            var isVertical = IsVerticalMove(firstCell, secondCell);
+            
+            cellController.OnChange(firstCell, secondCell, isVertical);
         }
     }
 }

@@ -1,21 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
-using CellRelated;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-[CustomEditor(typeof(CellGenerator))]
-public class CellGeneratorEditor : Editor
+namespace CellRelated
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(CellGenerator))]
+    public class CellGeneratorEditor : Editor
     {
-        DrawDefaultInspector();
-
-        var cellGenerator = (CellGenerator) target;
-        if(GUILayout.Button("Build Object"))
+        public override void OnInspectorGUI()
         {
-            cellGenerator.GenerateCells();
+            DrawDefaultInspector();
+
+            var cellGenerator = (CellGenerator) target;
+            if(GUILayout.Button("Build Object"))
+            {
+                cellGenerator.GenerateCells();
+            }
         }
     }
 }

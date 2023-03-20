@@ -13,7 +13,7 @@ namespace CellRelated
         public void SetBlock(BlockSo blockData)
         {
             _block = GetComponentInChildren<Block>();
-            
+
             _block.SetBlockData(blockData);
             _block.SetCell(this);
         }
